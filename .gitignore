@@ -1,0 +1,13 @@
+# Virtual Environment
+env/
+venv/
+
+# Environment Variables (Sangat penting agar API key/Secret tidak bocor)
+.env
+
+# Database lokal
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.pyc
