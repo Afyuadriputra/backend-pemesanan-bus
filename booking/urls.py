@@ -6,6 +6,7 @@ urlpatterns = [
     # Health / CSRF prime
     # =============================
     path("health/", views.health),
+    path("csrf/", views.csrf),
 
     # =============================
     # Public API (User)

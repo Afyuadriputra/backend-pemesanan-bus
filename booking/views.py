@@ -5,7 +5,7 @@ from typing import Any
 from django.conf import settings
 from django.http import JsonResponse, HttpRequest
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 
 from . import services
 
@@ -111,6 +111,7 @@ def seat_map(request: HttpRequest, trip_id: int):
     return _ok(data=res.data, message=res.message)
 
 
+@csrf_exempt
 @require_http_methods(["POST"])
 def hold_seat(request: HttpRequest):
     body, err = _json_body(request)
@@ -149,6 +150,7 @@ def release_seat(request: HttpRequest):
     return _ok(data=res.data, message=res.message)
 
 
+@csrf_exempt
 @require_http_methods(["POST"])
 def attach_contact(request: HttpRequest):
     body, err = _json_body(request)
@@ -177,6 +179,7 @@ def attach_contact(request: HttpRequest):
     return _ok(data=res.data, message=res.message)
 
 
+@csrf_exempt
 @require_http_methods(["POST"])
 def claim_hold(request: HttpRequest):
     body, err = _json_body(request)
@@ -276,3 +279,11 @@ def admin_confirm_booked(request: HttpRequest):
 def expire_now(request: HttpRequest):
     released = services.expire_holds()
     return _ok(data={"released": released}, message="Expired holds released")
+
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_http_methods
+
+@ensure_csrf_cookie
+@require_http_methods(["GET"])
+def csrf(request: HttpRequest):
+    return _ok(message="CSRF cookie set")
